@@ -4,25 +4,12 @@ import random
 
 def congratulate_user():
     print("=============================")
-    print(f"Congratulations, you won! your words: {guesses}")
-)
+    print(f'Congratulations, you won! your words: {guesses}')
     print("=============================")
 
 
 def is_game_over():
     return guessed == WORDS_TO_WIN or errors == ERRORS_TO_LOSE
-
-
-def guess_is_valid(candidate):
-    for letter in candidate:
-        if letter not in word:
-            print(f"You can not use letter {letter}")
-            return False
-        count = word.count(letter)
-        if count < candidate.count(letter):
-            print(f"You can use letter {letter} only {count} times")
-            return False
-    return True
 
 
 guessed = 0
@@ -43,17 +30,19 @@ print(f"Your word is '{word}'")
 
 while not is_game_over():
     guess = input("Your next take: ")
-
-    if not guess_is_valid(guess):
-        continue
-
-    if guess in full_list:
-        guessed += 1
-        guesses.append(guess)
-        if guessed == WORDS_TO_WIN:
-            congratulate_user()
-            exit()
-        print(f"That's right! {WORDS_TO_WIN - guessed} to go")
+    if guess not in guesses:
+        if guess in full_list:
+            guessed += 1
+            guesses.append(guess)
+            if guessed == WORDS_TO_WIN:
+                congratulate_user()
+                exit()
+            print(f"That's right! {WORDS_TO_WIN - guessed} to go")
+        else:
+            errors += 1
+            print(f"Oops :( No such word, you have {ERRORS_TO_LOSE - errors} lives more")
+        if errors == 3:
+            print("You lose")
     else:
-        errors += 1
-        print(f"Oops :( No such word, you have {ERRORS_TO_LOSE - errors} lives more")
+        print("You already used this word!")
+
